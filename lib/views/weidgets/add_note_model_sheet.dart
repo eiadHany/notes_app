@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import 'package:notes_app/Models/note_model.dart';
 import 'package:notes_app/cubits/cubit/add_note_cubit.dart';
+import 'package:notes_app/cubits/cubit/cubit/cubit/notes_cubit.dart';
 
 import 'custom_button.dart';
 import 'custom_text_field.dart';
@@ -22,11 +23,10 @@ class AddNoteModelSheet extends StatelessWidget {
             bottom: MediaQuery.of(context).viewInsets.bottom),
         child: BlocConsumer<AddNoteCubit, AddNoteState>(
           listener: (context, state) {
-            if (state is AddNoteFailure) {
-              print('failed ${state.errMessage}');
-            }
+            if (state is AddNoteFailure) {}
             {
               if (state is AddNoteSucess) {
+                BlocProvider.of<NotesCubit>(context).fetchAllNotes();
                 Navigator.pop(context);
               }
             }
