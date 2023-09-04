@@ -7,6 +7,7 @@ import 'package:notes_app/cubits/cubit/add_note_cubit.dart';
 import 'package:notes_app/cubits/cubit/cubit/cubit/notes_cubit.dart';
 
 import 'custom_button.dart';
+import 'custom_color_list_view.dart';
 import 'custom_text_field.dart';
 
 class AddNoteModelSheet extends StatelessWidget {
@@ -86,6 +87,10 @@ class _AddNoteFormState extends State<AddNoteForm> {
           const SizedBox(
             height: 16,
           ),
+          const ColorsListView(),
+          const SizedBox(
+            height: 16,
+          ),
           BlocBuilder<AddNoteCubit, AddNoteState>(
             builder: (context, state) {
               return CustomButton(
@@ -93,13 +98,11 @@ class _AddNoteFormState extends State<AddNoteForm> {
                 onTap: () {
                   if (formKey.currentState!.validate()) {
                     formKey.currentState!.save();
-                    var currentDate = DateTime.now();
-                    var formattedDateCurrent =
-                        DateFormat.yMd().format(currentDate);
+
                     var noteModel = NoteModel(
                         title: title!,
                         subTitle: subTitle!,
-                        date: formattedDateCurrent,
+                        date: formatDate(),
                         color: Colors.blue.value);
                     BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
                   } else {
@@ -116,5 +119,11 @@ class _AddNoteFormState extends State<AddNoteForm> {
         ],
       ),
     );
+  }
+
+  String formatDate() {
+    var currentDate = DateTime.now();
+    var formattedDateCurrent = DateFormat.yMd().format(currentDate);
+    return formattedDateCurrent;
   }
 }
